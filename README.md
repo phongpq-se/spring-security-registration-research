@@ -5,7 +5,7 @@ If you're not yet a student, you can get access to the course here: https://bit.
 
 
 ### Relevant Articles: 
-- [Spring Security Registration Tutorial](https://www.baeldung.com/spring-security-registration)
+- [Spring Security Registration Series](https://www.baeldung.com/spring-security-registration)
 - [The Registration Process With Spring Security](https://www.baeldung.com/registration-with-spring-mvc-and-spring-security)
 - [Registration – Activate a New Account by Email](https://www.baeldung.com/registration-verify-user-by-email)
 - [Registration with Spring Security – Password Encoding](https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt)
