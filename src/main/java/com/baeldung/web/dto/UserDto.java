@@ -9,6 +9,7 @@ import com.baeldung.validation.ValidPassword;
 
 @PasswordMatches
 public class UserDto {
+
     @NotNull
     @Size(min = 1, message = "{Size.userDto.firstName}")
     private String firstName;
