@@ -64,8 +64,34 @@ which can be a problem when running the application locally or in a test environ
 To enable/disable the check on the geolocation, set the property `geo.ip.lib.enabled` to true/false; this is false by default.
 
 ### Run registration rest api
+run docker mysql
+
+```yml
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: registration_02
+      MYSQL_USER: tutorialuser
+      MYSQL_PASSWORD: tutorialmy5ql
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+```
+
+To run docker compose use `docker-compose -f docker/mysql/docker-compose.yml up -d`
+
+call api registration
 
 ```declarative
+
 curl --location 'http://localhost:8081/user/registration' \
 --header 'Content-Type: application/json' \
 --data-raw '{

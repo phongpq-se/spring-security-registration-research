@@ -67,51 +67,52 @@ public class SecSecurityConfig {
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .authenticationProvider(authProvider())
-            .build();
+                .authenticationProvider(authProvider())
+                .build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-            .requestMatchers(new AntPathRequestMatcher("/resources/**", "/h2/**"));
+                .requestMatchers(new AntPathRequestMatcher("/resources/**", "/h2/**"));
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-            .securityContext((securityContext) -> securityContext.requireExplicitSave(true))
-            .authorizeHttpRequests(authz -> {
-                authz.requestMatchers(HttpMethod.GET, "/roleHierarchy")
-                    .hasRole("STAFF")
-                    .requestMatchers("/login*", "/logout*", "/signin/**", "/signup/**", "/customLogin", "/user/registration*", "/registrationConfirm*", "/expiredAccount*", "/registration*", "/badUser*", "/user/resendRegistrationToken*", "/forgetPassword*",
-                        "/user/resetPassword*", "/user/savePassword*", "/updatePassword*", "/user/changePassword*", "/emailError*", "/resources/**", "/old/user/registration*", "/successRegister*", "/qrcode*", "/user/enableNewLoc*")
-                    .permitAll()
-                    .requestMatchers("/invalidSession*")
-                    .anonymous()
-                    .requestMatchers("/user/updatePassword*")
-                    .hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
-                    .requestMatchers("/console")
-                    .hasAuthority("READ_PRIVILEGE")
-                    .anyRequest()
-                    .hasAuthority("READ_PRIVILEGE");
-            })
-            .formLogin((formLogin) -> formLogin.loginPage("/login")
-                .defaultSuccessUrl("/homepage.html")
-                .failureUrl("/login?error=true")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
-                .authenticationDetailsSource(authenticationDetailsSource)
-                .permitAll())
-            .sessionManagement((sessionManagement) -> sessionManagement.invalidSessionUrl("/invalidSession.html")
-                .maximumSessions(1)
-                .sessionRegistry(sessionRegistry()))
-            .logout((logout) -> logout.logoutSuccessHandler(myLogoutSuccessHandler)
-                .invalidateHttpSession(true)
-                .logoutSuccessUrl("/logout.html?logSucc=true")
-                .deleteCookies("JSESSIONID")
-                .permitAll())
-            .rememberMe((remember) -> remember.rememberMeServices(rememberMeServices()));
+                .securityContext((securityContext) -> securityContext.requireExplicitSave(true))
+                .authorizeHttpRequests(authz -> {
+                    authz.requestMatchers(HttpMethod.GET, "/roleHierarchy")
+                            .hasRole("STAFF")
+                            .requestMatchers("/login*", "/logout*", "/signin/**", "/signup/**", "/customLogin", "/user/registration*", "/registrationConfirm*", "/expiredAccount*", "/registration*", "/badUser*", "/user/resendRegistrationToken*", "/forgetPassword*",
+                                    "/user/resetPassword*", "/user/savePassword*", "/updatePassword*", "/user/changePassword*", "/emailError*", "/resources/**", "/old/user/registration*", "/successRegister*", "/qrcode*", "/user/enableNewLoc*"
+                            )
+                            .permitAll()
+                            .requestMatchers("/invalidSession*")
+                            .anonymous()
+                            .requestMatchers("/user/updatePassword*")
+                            .hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
+                            .requestMatchers("/console")
+                            .hasAuthority("READ_PRIVILEGE")
+                            .anyRequest()
+                            .hasAuthority("READ_PRIVILEGE");
+                })
+                .formLogin((formLogin) -> formLogin.loginPage("/login")
+                        .defaultSuccessUrl("/homepage.html")
+                        .failureUrl("/login?error=true")
+                        .successHandler(myAuthenticationSuccessHandler)
+                        .failureHandler(authenticationFailureHandler)
+                        .authenticationDetailsSource(authenticationDetailsSource)
+                        .permitAll())
+                .sessionManagement((sessionManagement) -> sessionManagement.invalidSessionUrl("/invalidSession.html")
+                        .maximumSessions(1)
+                        .sessionRegistry(sessionRegistry()))
+                .logout((logout) -> logout.logoutSuccessHandler(myLogoutSuccessHandler)
+                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/logout.html?logSucc=true")
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
+                .rememberMe((remember) -> remember.rememberMeServices(rememberMeServices()));
 
         return http.build();
     }
@@ -152,9 +153,9 @@ public class SecSecurityConfig {
     @Bean(name = "GeoIPCountry")
     public DatabaseReader databaseReader() throws IOException, GeoIp2Exception {
         final File resource = new File(this.getClass()
-            .getClassLoader()
-            .getResource("maxmind/GeoLite2-Country.mmdb")
-            .getFile());
+                .getClassLoader()
+                .getResource("maxmind/GeoLite2-Country.mmdb")
+                .getFile());
         return new DatabaseReader.Builder(resource).build();
     }
 
