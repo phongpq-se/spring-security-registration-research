@@ -1,5 +1,6 @@
 package com.baeldung.registration.listener;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import com.baeldung.service.IUserService;
@@ -39,8 +40,10 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         final String token = UUID.randomUUID().toString();
         service.createVerificationTokenForUser(user, token);
 
-        final SimpleMailMessage email = constructEmailMessage(event, user, token);
-        mailSender.send(email);
+        if (Optional.ofNullable(env.getProperty("notification.email.enable", Boolean.class)).isPresent()) {
+            final SimpleMailMessage email = constructEmailMessage(event, user, token);
+            mailSender.send(email);
+        }
     }
 
     //
@@ -57,6 +60,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         email.setFrom(env.getProperty("support.email"));
         return email;
     }
-    
+
 
 }
