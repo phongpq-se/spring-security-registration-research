@@ -9,6 +9,7 @@ import com.baeldung.web.dto.PasswordDto;
 import com.baeldung.web.dto.UserDto;
 import com.baeldung.web.error.InvalidOldPasswordException;
 import com.baeldung.web.util.GenericResponse;
+import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Optional;
@@ -53,12 +55,18 @@ public class RegistrationRestController {
         super();
     }
 
+    @GetMapping("/user/registration")
+    public String getRegistration() {
+        return "hello";
+    }
+
     // Registration
     @PostMapping("/user/registration")
-    public GenericResponse registerUserAccount(@RequestBody @Valid final UserDto accountDto, final HttpServletRequest request) {
+    public GenericResponse registerUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
         LOGGER.debug("Registering user account with information: {}", accountDto);
 
         final User registered = userService.registerNewUserAccount(accountDto);
+
         userService.addUserLocation(registered, getClientIP(request));
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
         return new GenericResponse("success");
@@ -91,12 +99,12 @@ public class RegistrationRestController {
 
         final String result = securityUserService.validatePasswordResetToken(passwordDto.getToken());
 
-        if(result != null) {
+        if (result != null) {
             return new GenericResponse(messages.getMessage("auth.message." + result, null, locale));
         }
 
         Optional<User> user = userService.getUserByPasswordResetToken(passwordDto.getToken());
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             userService.changeUserPassword(user.get(), passwordDto.getNewPassword());
             return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
         } else {

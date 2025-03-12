@@ -10,18 +10,15 @@ import com.baeldung.validation.ValidPassword;
 @PasswordMatches
 public class UserDto {
 
-    @NotNull
     @Size(min = 1, message = "{Size.userDto.firstName}")
     private String firstName;
 
-    @NotNull
     @Size(min = 1, message = "{Size.userDto.lastName}")
     private String lastName;
 
     @ValidPassword
     private String password;
 
-    @NotNull
     @Size(min = 1)
     private String matchingPassword;
 

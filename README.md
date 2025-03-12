@@ -3,7 +3,6 @@ If you're already a student of Learn Spring Security, you can get started diving
 If you're not yet a student, you can get access to the course here: https://bit.ly/github-lss
 </br></br></br>
 
-
 ### Relevant Articles: 
 - [Spring Security Registration Series](https://www.baeldung.com/spring-security-registration)
 - [The Registration Process With Spring Security](https://www.baeldung.com/registration-with-spring-mvc-and-spring-security)
@@ -63,3 +62,19 @@ If you want to activate the configuration for the article [Custom Login Page for
 The geolocation checks do not work for the IP addresses 127.0.0.1 and 0.0.0.0, 
 which can be a problem when running the application locally or in a test environment.
 To enable/disable the check on the geolocation, set the property `geo.ip.lib.enabled` to true/false; this is false by default.
+
+### Run registration rest api
+
+```declarative
+curl --location 'http://localhost:8081/user/registration' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "firstName": "phong",
+    "lastName": "pham",
+    "email": "phongpq.se@gmail.com",
+    "password": "phong12aA@",
+    "matchingPassword": "phong12aA@"
+}
+'
+```
+
