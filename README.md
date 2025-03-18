@@ -103,4 +103,4 @@ curl --location 'http://localhost:8081/user/registration' \
 }
 '
 ```
-
+note: use Google App Password to config java mail
