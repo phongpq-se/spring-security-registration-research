@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.List;
@@ -81,7 +82,7 @@ public class RegistrationController {
     public ModelAndView console(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey") final Optional<String> messageKey) {
 
         Locale locale = request.getLocale();
-        messageKey.ifPresent( key -> {
+        messageKey.ifPresent(key -> {
                     String message = messages.getMessage(key, null, locale);
                     model.addAttribute("message", message);
                 }
@@ -91,17 +92,17 @@ public class RegistrationController {
     }
 
     @GetMapping("/badUser")
-    public ModelAndView badUser(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey" ) final Optional<String> messageKey, @RequestParam("expired" ) final Optional<String> expired, @RequestParam("token" ) final Optional<String> token) {
+    public ModelAndView badUser(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey") final Optional<String> messageKey, @RequestParam("expired") final Optional<String> expired, @RequestParam("token") final Optional<String> token) {
 
         Locale locale = request.getLocale();
-        messageKey.ifPresent( key -> {
+        messageKey.ifPresent(key -> {
                     String message = messages.getMessage(key, null, locale);
                     model.addAttribute("message", message);
                 }
         );
 
-        expired.ifPresent( e -> model.addAttribute("expired", e));
-        token.ifPresent( t -> model.addAttribute("token", t));
+        expired.ifPresent(e -> model.addAttribute("expired", e));
+        token.ifPresent(t -> model.addAttribute("token", t));
 
         return new ModelAndView("badUser", model);
     }
@@ -110,7 +111,7 @@ public class RegistrationController {
     public ModelAndView showChangePasswordPage(final ModelMap model, @RequestParam("token") final String token) {
         final String result = securityUserService.validatePasswordResetToken(token);
 
-        if(result != null) {
+        if (result != null) {
             String messageKey = "auth.message." + result;
             model.addAttribute("messageKey", messageKey);
             return new ModelAndView("redirect:/login", model);
@@ -121,10 +122,10 @@ public class RegistrationController {
     }
 
     @GetMapping("/updatePassword")
-    public ModelAndView updatePassword(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey" ) final Optional<String> messageKey) {
+    public ModelAndView updatePassword(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey") final Optional<String> messageKey) {
         Locale locale = request.getLocale();
         model.addAttribute("lang", locale.getLanguage());
-        messageKey.ifPresent( key -> {
+        messageKey.ifPresent(key -> {
                     String message = messages.getMessage(key, null, locale);
                     model.addAttribute("message", message);
                 }
@@ -134,16 +135,16 @@ public class RegistrationController {
     }
 
     @GetMapping("/login")
-    public ModelAndView login(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey" ) final Optional<String> messageKey, @RequestParam("error" ) final Optional<String> error) {
+    public ModelAndView login(final HttpServletRequest request, final ModelMap model, @RequestParam("messageKey") final Optional<String> messageKey, @RequestParam("error") final Optional<String> error) {
         Locale locale = request.getLocale();
         model.addAttribute("lang", locale.getLanguage());
-        messageKey.ifPresent( key -> {
+        messageKey.ifPresent(key -> {
                     String message = messages.getMessage(key, null, locale);
                     model.addAttribute("message", message);
                 }
         );
 
-        error.ifPresent( e ->  model.addAttribute("error", e));
+        error.ifPresent(e -> model.addAttribute("error", e));
 
         return new ModelAndView("login", model);
     }
@@ -152,7 +153,7 @@ public class RegistrationController {
     public String enableNewLoc(Locale locale, Model model, @RequestParam("token") String token) {
         final String loc = userService.isValidNewLocationToken(token);
         if (loc != null) {
-            model.addAttribute("message", messages.getMessage("message.newLoc.enabled", new Object[] { loc }, locale));
+            model.addAttribute("message", messages.getMessage("message.newLoc.enabled", new Object[]{loc}, locale));
         } else {
             model.addAttribute("message", messages.getMessage("message.error", null, locale));
         }
@@ -168,7 +169,7 @@ public class RegistrationController {
                 .map(Role::getPrivileges)
                 .flatMap(Collection::stream)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         List<GrantedAuthority> authorities = privileges.stream()
                 .map(p -> new SimpleGrantedAuthority(p.getName()))

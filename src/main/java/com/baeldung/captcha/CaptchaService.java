@@ -35,4 +35,5 @@ public class CaptchaService extends AbstractCaptchaService {
         }
         reCaptchaAttemptService.reCaptchaSucceeded(getClientIP());
     }
+
 }
