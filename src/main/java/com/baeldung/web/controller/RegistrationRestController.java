@@ -55,11 +55,6 @@ public class RegistrationRestController {
         super();
     }
 
-    @GetMapping("/user/registration")
-    public String getRegistration() {
-        return "hello";
-    }
-
     // Registration
     @PostMapping("/user/registration")
     public GenericResponse registerUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
